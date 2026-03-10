@@ -7,47 +7,74 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using System.IO;
+using NLog;
+
 
 
 namespace ASCII_Art_Project
 {
     internal class Program
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private const double WIDTH_OFFSET = 1.7;
         private const int MAX_WIDTH = 474;
 
         [STAThread]
         static void Main(string[] args)
         {
+            Logger.Info("Starting the application.");
+
             OpenFileDialog openFileDilog = new OpenFileDialog
             {
                 Filter = "Images|*.jpg;*.jpeg;*.png;*.bmp"
             };
 
+            int counter = 0;
+
             do
             {
                 if (openFileDilog.ShowDialog() != DialogResult.OK)
+                {
+                    Logger.Warn("No file selected.");
                     continue;
+                }
+
+                counter++;
+
+                Logger.Info($"Selected file: {openFileDilog.FileName}");
 
                 Console.Clear();
 
-                Bitmap bitmap = new Bitmap(openFileDilog.FileName);
-                bitmap = ResizeBitmap(bitmap);
+                try
+                {
+                    Bitmap bitmap = new Bitmap(openFileDilog.FileName);
+                    bitmap = ResizeBitmap(bitmap);
 
-                bitmap.ToGrayscale();
+                    bitmap.ToGrayscale();
 
-                var converter = new BitmapToASCIIConverter(bitmap);
-                var rows = converter.Convert();
+                    var converter = new BitmapToASCIIConverter(bitmap);
+                    var rows = converter.Convert();
 
-                foreach (var row in rows)
-                    Console.WriteLine(row);
+                    foreach (var row in rows)
+                        Console.WriteLine(row);
 
-                var rowReversed = converter.ConvertReversed();
-                File.WriteAllLines("image.txt", rowReversed.Select(r => new string(r)));
-                
-                Console.SetCursorPosition(0, 0);
-                Console.WriteLine("Press enter to add new image... \n");
-                Console.ReadLine();
+                    var rowReversed = converter.ConvertReversed();
+                    File.WriteAllLines("image.txt", rowReversed.Select(r => new string(r)));
+
+                    Logger.Info("Image converted to ASCII and saved to image.txt");
+                    Logger.Info($"User added {counter} images");
+
+                    Console.SetCursorPosition(0, 0);
+                    Console.WriteLine("Press enter to add new image. \n");
+                    Console.ReadLine();
+                    
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "An error occurred while processing the image.");
+                }
 
             } while (true);
         }
@@ -56,7 +83,12 @@ namespace ASCII_Art_Project
         {
             var newHeight = bitmap.Height / WIDTH_OFFSET * MAX_WIDTH / bitmap.Width;
             if (bitmap.Width > MAX_WIDTH || bitmap.Height > newHeight)
+            {
                 bitmap = new Bitmap(bitmap, new Size(MAX_WIDTH, (int)newHeight));
+
+                Logger.Info($"Resized image to: {bitmap.Size}");
+            }
+                
             return bitmap;
         }
     }
