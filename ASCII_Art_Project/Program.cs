@@ -20,6 +20,11 @@ namespace ASCII_Art_Project
         private const double WIDTH_OFFSET = 1.7;
         private const int MAX_WIDTH = 474;
 
+
+        /// <summary>
+        /// The entry point of the application that allows the user to select an image file, converts it to ASCII art, and saves the result to a text file. 
+        /// </summary>
+        /// <param name="args"> A string array that represents the command-line arguments. In this case, it is not used. </param>
         [STAThread]
         static void Main(string[] args)
         {
@@ -68,7 +73,6 @@ namespace ASCII_Art_Project
                     Console.SetCursorPosition(0, 0);
                     Console.WriteLine("Press enter to add new image. \n");
                     Console.ReadLine();
-                    
 
                 }
                 catch (Exception ex)
@@ -79,6 +83,12 @@ namespace ASCII_Art_Project
             } while (true);
         }
 
+
+        /// <summary>
+        /// Resizes the bitmap to fit within the specified maximum width while maintaining the aspect ratio.
+        /// </summary>
+        /// <param name="bitmap"> Object of type Bitmap that represents the image to be resized. </param>
+        /// <returns> Object of type Bitmap that represents the resized image. </returns>
         private static Bitmap ResizeBitmap(Bitmap bitmap)
         {
             var newHeight = bitmap.Height / WIDTH_OFFSET * MAX_WIDTH / bitmap.Width;
