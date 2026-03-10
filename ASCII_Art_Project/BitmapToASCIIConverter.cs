@@ -12,12 +12,18 @@ namespace ASCII_Art_Project
         private readonly Bitmap _bitmap;
         private readonly char[] _acsiiTable = { '.', ',', ':', '+', '*', '?', '%', 'S', '#', '@' };
         
+
         public BitmapToASCIIConverter(Bitmap bitmap)
         {
             _bitmap = bitmap;
 
         }
 
+
+        /// <summary>
+        /// Reverses the ASCII table to create a different visual effect in the resulting ASCII art in file.
+        /// </summary>
+        /// <returns> A new character array that contains the characters from the original ASCII table in reverse order. </returns>
         public char[] Reverse()
         {
             char[] reversedTable = new char[_acsiiTable.Length];
@@ -28,16 +34,33 @@ namespace ASCII_Art_Project
             return reversedTable;
         }
 
+
+        /// <summary>
+        /// Converts the bitmap to a 2D array of characters based on the brightness of each pixel and the corresponding character in the ASCII table for console.
+        /// </summary>
+        /// <returns> Converted 2D array of characters. </returns>
         public char[][] Convert()
         {
             return Convert(_acsiiTable);
         }
 
+
+
+        /// <summary>
+        /// Converts the bitmap to a 2D array of characters based on the brightness of each pixel and the corresponding character in the reversed ASCII table for file.
+        /// </summary>
+        /// <returns> Converted 2D array of characters using the reversed ASCII table. </returns>
         public char[][] ConvertReversed()
         {
             return Convert(Reverse());
         }
 
+
+        /// <summary>
+        /// Converts the bitmap to a 2D array of characters based on the brightness of each pixel and the corresponding character in the provided ASCII table.
+        /// </summary>
+        /// <param name="asciiTable">An array of characters determined by the purpose of use.</param>
+        /// <returns> Converted 2D array of characters using the provided ASCII table. </returns>
         public char[][] Convert(char[] asciiTable)
         {
             var result = new char[_bitmap.Height][];
@@ -54,6 +77,16 @@ namespace ASCII_Art_Project
             return result;
         }
 
+
+        /// <summary>
+        /// Maps a value from one range to another range. This is used to determine the appropriate index in the ASCII table based on the brightness of the pixel.
+        /// </summary>
+        /// <param name="valueToMap"> Starting value that needs to be mapped from the original range (0 to 255 for pixel brightness) to the target range (0 to length of ASCII table - 1). </param>
+        /// <param name="start1"> Start of the original range (0 for pixel brightness). </param>
+        /// <param name="stop1"> Stop of the original range (255 for pixel brightness). </param>
+        /// <param name="start2"> Start of the target range (0 for ASCII table index). </param>
+        /// <param name="stop2"> Stop of the target range (length of ASCII table - 1 for ASCII table index). </param>
+        /// <returns> Value mapped from the original range to the target range. </returns>
         private float Map(float valueToMap, float start1, float stop1, float start2, float stop2)
         {
             return ((valueToMap - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
