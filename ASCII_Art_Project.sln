@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASCII_Art_Project", "ASCII_Art_Project\ASCII_Art_Project.csproj", "{3B452328-E7CD-41D6-BE4C-AA9C3302ADED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B452328-E7CD-41D6-BE4C-AA9C3302ADED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B452328-E7CD-41D6-BE4C-AA9C3302ADED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B452328-E7CD-41D6-BE4C-AA9C3302ADED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B452328-E7CD-41D6-BE4C-AA9C3302ADED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC97BF4F-51D3-4EE2-B5ED-F7E49FA14B42}
+	EndGlobalSection
+EndGlobal
