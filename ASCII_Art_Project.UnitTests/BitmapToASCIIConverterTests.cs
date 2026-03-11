@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ASCII_Art_Project;
 using System.Drawing;
+using System.Linq;
 
 namespace ASCII_Art_Project.UnitTests
 {
@@ -37,10 +38,13 @@ namespace ASCII_Art_Project.UnitTests
             // Assert
             CollectionAssert.AreEqual(expectedReversedArray, result);
         }
+    }
 
-
+    [TestClass]
+    public class ExtentionsTests
+    {
         [TestMethod]
-        public void ResizeBitmap_BitmapIsResized_ReturnsResizedBitmap()
+        public void ResizeBitmap_BitmapIsResized_ReturnsTrue()
         {
             // Arrange
             var originalBitmap = new Bitmap(500, 500);
@@ -63,6 +67,71 @@ namespace ASCII_Art_Project.UnitTests
             // Assert
             Assert.AreEqual(resultColor.R, resultColor.G);
             Assert.AreEqual(resultColor.G, resultColor.B);
+        }
+
+
+        [TestMethod]
+        public void SaveAsTextFile_ASCIIArtIsSaved_ReturnsTrue()
+        {
+            // Arrange
+            char[][] testArt = new char[][]
+            {
+                new char[] { 't', 'a', 'r' },
+                new char[] { 't', 'a', 'r' }
+            };
+            string filePath = "test_art.txt";
+            // Act
+            testArt.SaveAsTextFile(filePath);
+            // Assert
+            Assert.IsTrue(System.IO.File.Exists(filePath));
+        }
+
+
+        [TestMethod]
+        public void SaveAsTextFile_ASCIIArtIsSaved_FileContentIsCorrect()
+        {
+            // Arrange
+            char[][] testArt = new char[][]
+            {
+                new char[] { 't', 'a', 'r' },
+                new char[] { 't', 'a', 'r' }
+            };
+            string filePath = "test_art.txt";
+            // Act
+            testArt.SaveAsTextFile(filePath);
+            string fileContent = System.IO.File.ReadAllText(filePath);
+            // Assert
+            Assert.AreEqual("tar\r\ntar\r\n", fileContent);
+        }
+
+
+        [TestMethod]
+        public void Convert_BlackPixel_MapsToFirstCharInAsciiTable()
+        {
+            // Arrange
+            char[] asciiTable = new char[] { '@', '#', ' ', '.' };
+            var bitmap = new Bitmap(1, 1);
+            bitmap.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
+            var converter = new BitmapToASCIIConverter(bitmap);
+            // Act
+            var result = converter.Convert(asciiTable);
+            // Assert
+            Assert.AreEqual('@', result[0][0]);
+        }
+
+
+        [TestMethod]
+        public void ProcessImage_ValidImage_ReturnsReversedAndNormal()
+        {
+            // Arrange
+            var filePath = "E://Sys_files//Downloads/sheep.jpg";
+            // Act
+            var result = filePath.ProcessImage();
+            var normalReversed = result.Normal.Reverse().ToArray();
+            // Assert
+            Assert.IsNotNull(result.Reversed);
+            Assert.IsNotNull(result.Normal);
+            Assert.AreEqual(normalReversed.Length, result.Reversed.Length);
         }
     }
 }

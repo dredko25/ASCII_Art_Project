@@ -54,7 +54,7 @@ namespace ASCII_Art_Project
                     var result = fileName.ProcessImage();
 
                     result.Reversed.SaveAsTextFile($"image{counter}.txt");
-                    Logger.Info($"Image converted to ASCII and saved as image{counter}.txt");
+                    Logger.Info($"Image converted to ASCII and saved to image{counter}.txt");
 
                     foreach (var row in result.Normal)
                         Console.WriteLine(row);
