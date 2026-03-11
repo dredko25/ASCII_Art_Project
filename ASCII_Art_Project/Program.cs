@@ -15,7 +15,7 @@ namespace ASCII_Art_Project
 {
     public class Program
     {
-        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+        public static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
         
         /// <summary>
@@ -32,7 +32,7 @@ namespace ASCII_Art_Project
                 Filter = "Images|*.jpg;*.jpeg;*.png;*.bmp"
             };
 
-            int counter = 0;
+            byte counter = 0;
 
             do
             {
@@ -50,27 +50,14 @@ namespace ASCII_Art_Project
 
                 try
                 {
-                    Bitmap bitmap = new Bitmap(openFileDilog.FileName);
-
-                    bitmap = bitmap.ResizeBitmap();
-
-                    Logger.Info($"Resized image to: {bitmap.Size}");
-
-                    bitmap.ToGrayscale();
-
-                    var converter = new BitmapToASCIIConverter(bitmap);
-                    var rows = converter.Convert();
+                    var fileName = openFileDilog.FileName;
+                    var rows = fileName.ProcessImage(counter);
 
                     foreach (var row in rows)
                         Console.WriteLine(row);
 
-                    var rowReversed = converter.ConvertReversed();
-                    rowReversed.SaveAsTextFile($"image{counter}.txt");
-
-                    Logger.Info("Image converted to ASCII and saved to image.txt");
                     Logger.Info($"User added {counter} images");
 
-                    Console.SetCursorPosition(0, 0);
                     Console.WriteLine("Press enter to add new image. \n");
                     Console.ReadLine();
 
