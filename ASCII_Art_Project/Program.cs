@@ -51,9 +51,12 @@ namespace ASCII_Art_Project
                 try
                 {
                     var fileName = openFileDilog.FileName;
-                    var rows = fileName.ProcessImage(counter);
+                    var result = fileName.ProcessImage();
 
-                    foreach (var row in rows)
+                    result.Reversed.SaveAsTextFile($"image{counter}.txt");
+                    Logger.Info($"Image converted to ASCII and saved as image{counter}.txt");
+
+                    foreach (var row in result.Normal)
                         Console.WriteLine(row);
 
                     Logger.Info($"User added {counter} images");

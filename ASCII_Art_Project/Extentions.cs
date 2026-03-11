@@ -65,9 +65,8 @@ namespace ASCII_Art_Project
         /// Processes the image by resizing it, converting it to grayscale, and then converting it to a 2D array of characters.
         /// </summary>
         /// <param name="filePath"> File path as a string that specifies the location and name of the image file to be processed.</param>
-        /// <param name="counter"> Counter as a byte that is used to create unique file names for the output text files when saving the ASCII art. </param>
         /// <returns> Converted 2D array of characters that represents the ASCII art version of the processed image. </returns>
-        public static char[][] ProcessImage(this string filePath, byte counter)
+        public static (char[][] Reversed, char[][] Normal) ProcessImage(this string filePath)
         {
             Bitmap bitmap = new Bitmap(filePath);
             bitmap = bitmap.ResizeBitmap();
@@ -75,10 +74,9 @@ namespace ASCII_Art_Project
             bitmap.ToGrayscale();
             var converter = new BitmapToASCIIConverter(bitmap);
             var rowReversed = converter.ConvertReversed();
-            rowReversed.SaveAsTextFile($"image{counter}.txt");
-            Logger.Info($"Image converted to ASCII and saved as image{counter}.txt");
-
-            return converter.Convert();
+            var row = converter.Convert();
+            
+            return (rowReversed, row);
         }
     }
 
