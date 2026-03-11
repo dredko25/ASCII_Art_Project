@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ASCII_Art_Project
 {
-    internal class BitmapToASCIIConverter
+    public class BitmapToASCIIConverter
     {
         private readonly Bitmap _bitmap;
         private readonly char[] _acsiiTable = { '.', ',', ':', '+', '*', '?', '%', 'S', '#', '@' };
@@ -21,15 +21,15 @@ namespace ASCII_Art_Project
 
 
         /// <summary>
-        /// Reverses the ASCII table to create a different visual effect in the resulting ASCII art in file.
+        /// Reverses the array to create a different visual effect in the resulting ASCII art in file.
         /// </summary>
-        /// <returns> A new character array that contains the characters from the original ASCII table in reverse order. </returns>
-        public char[] Reverse()
+        /// <returns> A new character array in reverse order. </returns>
+        public char[] Reverse(char[] array)
         {
-            char[] reversedTable = new char[_acsiiTable.Length];
-            for (int i = 0; i < _acsiiTable.Length; i++)
+            char[] reversedTable = new char[array.Length];
+            for (int i = 0; i < array.Length; i++)
             {
-                reversedTable[i] = _acsiiTable[_acsiiTable.Length - 1 - i];
+                reversedTable[i] = array[array.Length - 1 - i];
             }
             return reversedTable;
         }
@@ -52,7 +52,7 @@ namespace ASCII_Art_Project
         /// <returns> Converted 2D array of characters using the reversed ASCII table. </returns>
         public char[][] ConvertReversed()
         {
-            return Convert(Reverse());
+            return Convert(Reverse(_acsiiTable));
         }
 
 
@@ -87,7 +87,7 @@ namespace ASCII_Art_Project
         /// <param name="start2"> Start of the target range (0 for ASCII table index). </param>
         /// <param name="stop2"> Stop of the target range (length of ASCII table - 1 for ASCII table index). </param>
         /// <returns> Value mapped from the original range to the target range. </returns>
-        private float Map(float valueToMap, float start1, float stop1, float start2, float stop2)
+        public float Map(float valueToMap, float start1, float stop1, float start2, float stop2)
         {
             return ((valueToMap - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
         }
