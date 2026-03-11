@@ -38,6 +38,39 @@ namespace ASCII_Art_Project.UnitTests
             // Assert
             CollectionAssert.AreEqual(expectedReversedArray, result);
         }
+
+
+        [TestMethod]
+        public void Convert_BlackPixel_MapsToFirstCharInAsciiTable()
+        {
+            // Arrange
+            char[] asciiTable = new char[] { '@', '#', ' ', '.' };
+            var bitmap = new Bitmap(1, 1);
+            bitmap.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
+            var converter = new BitmapToASCIIConverter(bitmap);
+            // Act
+            var result = converter.Convert(asciiTable);
+            // Assert
+            Assert.AreEqual('@', result[0][0]);
+        }
+
+
+        /* IntegrationTest */
+        [TestMethod]
+        public void Convert_ConvertPixsels_ReturnsExpectedCharacters()
+        {
+            // Arrange
+            var bitmap = new Bitmap(2, 1);
+            bitmap.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
+            bitmap.SetPixel(1, 0, Color.FromArgb(255, 255, 255));
+            char[] asciiTable = { '#', '.' };
+            var converter = new BitmapToASCIIConverter(bitmap);
+            // Act
+            char[][] result = converter.Convert(asciiTable);
+            // Assert
+            Assert.AreEqual('#', result[0][0]);
+            Assert.AreEqual('.', result[0][1]);
+        }
     }
 
     [TestClass]
@@ -102,21 +135,6 @@ namespace ASCII_Art_Project.UnitTests
             string fileContent = System.IO.File.ReadAllText(filePath);
             // Assert
             Assert.AreEqual("tar\r\ntar\r\n", fileContent);
-        }
-
-
-        [TestMethod]
-        public void Convert_BlackPixel_MapsToFirstCharInAsciiTable()
-        {
-            // Arrange
-            char[] asciiTable = new char[] { '@', '#', ' ', '.' };
-            var bitmap = new Bitmap(1, 1);
-            bitmap.SetPixel(0, 0, Color.FromArgb(0, 0, 0));
-            var converter = new BitmapToASCIIConverter(bitmap);
-            // Act
-            var result = converter.Convert(asciiTable);
-            // Assert
-            Assert.AreEqual('@', result[0][0]);
         }
 
 
