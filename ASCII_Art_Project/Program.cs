@@ -13,14 +13,11 @@ using NLog;
 
 namespace ASCII_Art_Project
 {
-    internal class Program
+    public class Program
     {
         private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private const double WIDTH_OFFSET = 1.7;
-        private const int MAX_WIDTH = 474;
-
-
+        
         /// <summary>
         /// The entry point of the application that allows the user to select an image file, converts it to ASCII art, and saves the result to a text file. 
         /// </summary>
@@ -54,7 +51,10 @@ namespace ASCII_Art_Project
                 try
                 {
                     Bitmap bitmap = new Bitmap(openFileDilog.FileName);
-                    bitmap = ResizeBitmap(bitmap);
+
+                    bitmap = bitmap.ResizeBitmap();
+
+                    Logger.Info($"Resized image to: {bitmap.Size}");
 
                     bitmap.ToGrayscale();
 
@@ -65,7 +65,7 @@ namespace ASCII_Art_Project
                         Console.WriteLine(row);
 
                     var rowReversed = converter.ConvertReversed();
-                    File.WriteAllLines("image.txt", rowReversed.Select(r => new string(r)));
+                    rowReversed.SaveAsTextFile($"image{counter}.txt");
 
                     Logger.Info("Image converted to ASCII and saved to image.txt");
                     Logger.Info($"User added {counter} images");
@@ -81,25 +81,6 @@ namespace ASCII_Art_Project
                 }
 
             } while (true);
-        }
-
-
-        /// <summary>
-        /// Resizes the bitmap to fit within the specified maximum width while maintaining the aspect ratio.
-        /// </summary>
-        /// <param name="bitmap"> Object of type Bitmap that represents the image to be resized. </param>
-        /// <returns> Object of type Bitmap that represents the resized image. </returns>
-        private static Bitmap ResizeBitmap(Bitmap bitmap)
-        {
-            var newHeight = bitmap.Height / WIDTH_OFFSET * MAX_WIDTH / bitmap.Width;
-            if (bitmap.Width > MAX_WIDTH || bitmap.Height > newHeight)
-            {
-                bitmap = new Bitmap(bitmap, new Size(MAX_WIDTH, (int)newHeight));
-
-                Logger.Info($"Resized image to: {bitmap.Size}");
-            }
-                
-            return bitmap;
         }
     }
 }
