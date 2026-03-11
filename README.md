@@ -19,4 +19,4 @@
 ![Отриманий ASCII-арт](Images/console_screenshot.png)
 
 ### Скріншот текстового файла
-![Скріншот текстового файла](Images/tst_screenshot.png)
+![Скріншот текстового файла](Images/txt_screenshot.png)
